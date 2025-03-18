@@ -1111,16 +1111,16 @@ class pdf_rivesaltes_secp extends ModelePDFSuppliersOrders
 
         $pdf->SetFont('', '', $default_font_size - 1);
 
-        if (!empty($conf->global->PDF_SHOW_PROJECT)) {
+        /*if (!empty($conf->global->PDF_SHOW_PROJECT)) {
             $object->fetch_projet();
             if (!empty($object->project->ref)) {
                 $posy += 4;
                 $pdf->SetXY($posx, $posy);
                 $langs->load("projects");
                 $pdf->SetTextColor(0, 0, 60);
-                $pdf->MultiCell(100, 3, $outputlangs->transnoentities("Project") . " : " . (empty($object->project->ref) ? '' : $object->projet->ref), '', 'R');
+                $pdf->MultiCell(100, 3, $outputlangs->transnoentities("Project") . " : " . (empty($object->project->ref) ? '' : $object->project->ref .' - ' .$object->project->title ), '', 'R');
             }
-        }
+        }*/
 
         if (!empty($object->date_commande)) {
             $posy += 5;
@@ -1142,6 +1142,17 @@ class pdf_rivesaltes_secp extends ModelePDFSuppliersOrders
             $pdf->SetXY($posx - 90, $posy);
             $pdf->MultiCell(190, 3, $outputlangs->transnoentities("DateDeliveryPlanned") . " : " . dol_print_date($object->delivery_date, $usehourmin, false, $outputlangs, true), '', 'R');
         }
+
+		if (!empty($conf->global->PDF_SHOW_PROJECT)) {
+			$object->fetch_projet();
+			if (!empty($object->project->ref)) {
+				$posy += 4;
+				$pdf->SetXY($posx, $posy);
+				$langs->load("projects");
+				$pdf->SetTextColor(0, 0, 60);
+				$pdf->MultiCell(100, 3, $outputlangs->transnoentities("Project") . " : " . (empty($object->project->ref) ? '' : $object->project->ref .' - ' .$object->project->title ), '', 'R');
+			}
+		}
 
         if ($object->thirdparty->code_fournisseur) {
             $posy += 4;
